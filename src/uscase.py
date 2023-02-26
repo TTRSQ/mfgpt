@@ -4,6 +4,7 @@ from src.adapter import gpt
 import time
 from typing import List
 from src.adapter import line
+import json
 
 
 def get_non_existing_mails() -> List[gmail.DetailItem]:
@@ -38,7 +39,10 @@ def save_mails(new_mails: List[gmail.DetailItem]):
         return
     print("insert new mails to bq length: ", len(new_mails))
     bq.insert_mails(
-        [bq.Row(m.id, m.threadId, m.snippet, m.timeStamp) for m in new_mails]
+        [
+            bq.Row(m.id, m.threadId, m.sender, m.subject, m.snippet, m.timeStamp)
+            for m in new_mails
+        ]
     )
     print("inserted")
 
@@ -51,11 +55,22 @@ def notify_new_mails(new_mails: List[gmail.DetailItem]):
     message = ""
     for m in new_mails:
         message += f"https://mail.google.com/mail/u/0/#inbox/{m.id}\n"
-        j_res = gpt.check_importance(m.snippet)
+        j_res = gpt.check_importance(
+            json.dumps(
+                {
+                    "title": m.subject,
+                    "from": m.sender,
+                    "snippet": m.snippet,
+                },
+                ensure_ascii=False,
+            )
+        )
 
         # GPTが重要と判断したら通知
         if j_res.is_important:
             message += f"{m.snippet}\n"
             message += f"\n通知理由: {j_res.reason}"
             line.notify_message(message)
+        else:
+            print("skip notify", j_res.all_statements)
         time.sleep(1)

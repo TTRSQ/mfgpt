@@ -10,8 +10,10 @@ table_id = os.environ.get("BQ_TABLE_ID")
 class Row:
     id: str
     threadId: str
-    snippet: Optional[str]
-    timeStamp: Optional[int]
+    sender: str
+    subject: str
+    snippet: str
+    timeStamp: int
 
 
 def insert_mails(mails: List[Row]):
@@ -41,5 +43,14 @@ def list_mails(search_ids: List[str]) -> List[Row]:
 
     retMails = []
     for row in query_job:
-        retMails.append(Row(row.id, row.threadId, row.snippet, row.timeStamp))
+        retMails.append(
+            Row(
+                row.id,
+                row.threadId,
+                row.sender,
+                row.subject,
+                row.snippet,
+                row.timeStamp,
+            )
+        )
     return retMails

@@ -28,10 +28,11 @@ def generatePrompt(mailSummary: str):
     Responce: """
 
 
-def check_importance(mailSummary: str) -> Judgement:
+def check_importance(prompt: str) -> Judgement:
+    print("prompt:", prompt)
     response = openai.Completion.create(
-        model="text-davinci-001",
-        prompt=generatePrompt(mailSummary),
+        model="curie:ft-personal-2023-02-26-20-26-44",
+        prompt=prompt,
         temperature=0,
         max_tokens=100,
     )

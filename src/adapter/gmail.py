@@ -24,6 +24,8 @@ class ListItem:
 class DetailItem:
     id: str
     threadId: str
+    sender: str
+    subject: str
     snippet: str
     timeStamp: int
 
@@ -80,9 +82,22 @@ def get_message(id: str) -> DetailItem:
 
     try:
         message_result = service.users().messages().get(userId="me", id=id).execute()
+        froms = [
+            item["value"]
+            for item in message_result["payload"]["headers"]
+            if item["name"] == "From"
+        ]
+        subjects = [
+            item["value"]
+            for item in message_result["payload"]["headers"]
+            if item["name"] == "Subject"
+        ]
+
         return DetailItem(
             id,
             message_result["threadId"],
+            froms[0] if len(froms) > 0 else "Unknown",
+            subjects[0] if len(subjects) > 0 else "Nontitle",
             message_result["snippet"],
             int(int(message_result["internalDate"]) / 1000),
         )
