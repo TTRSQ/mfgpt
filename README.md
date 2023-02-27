@@ -1,2 +1,2 @@
 # mfgpt
-![メールフィルター構成図](https://user-images.githubusercontent.com/26806928/221653991-90d8893f-9f92-47b3-a430-a1783d5f4e42.png)
+![Untitled-2023-02-28-0344](https://user-images.githubusercontent.com/26806928/221654808-b3991bfb-c197-4db9-93e0-5f86012d5985.png)
