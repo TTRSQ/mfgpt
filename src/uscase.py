@@ -52,9 +52,8 @@ def notify_new_mails(new_mails: List[gmail.DetailItem]):
         print("skip notify")
         return
     print("notify new mails")
-    message = ""
+
     for m in new_mails:
-        message += f"https://mail.google.com/mail/u/0/#inbox/{m.id}\n"
         j_res = gpt.check_importance(
             json.dumps(
                 {
@@ -68,8 +67,10 @@ def notify_new_mails(new_mails: List[gmail.DetailItem]):
 
         # GPTが重要と判断したら通知
         if j_res.is_important:
+            message = f"\n{m.subject}\n"
             message += f"{m.snippet}\n"
             message += f"\n通知理由: {j_res.reason}"
+            message += f"\nLINK: https://mail.google.com/mail/u/0/#inbox/{m.id}\n"
             line.notify_message(message)
         else:
             print("skip notify", j_res.all_statements)
