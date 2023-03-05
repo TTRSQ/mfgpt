@@ -17,17 +17,12 @@ with open("data.csv", "r") as f:
             dic = {}
             for i in range(len(keys)):
                 dic[keys[i]] = row[i]
-            obj = {
-                "title": dic["subject"],
-                "from": dic["sender"],
-                "snippet": dic["snippet"],
-            }
             sub = dic["subject"].replace('"', "").replace("'", "").replace("　", " ")
             sender = dic["sender"].replace('"', "").replace("'", "").replace("　", " ")
             snipet = dic["snippet"].replace('"', "").replace("'", "").replace("　", " ")
             prompt = (
                 f"title: {sub}\\nfrom: {sender}\\nsnippet: {snipet}\\n\\n\\n###\\n\\n"
             )
-            completion = dic["ans"] + " END"
+            completion = f'判定: {dic["ans"].split(", ")[0]}\\n理由: {dic["ans"].split(", ")[1]}\\n END'
 
             writer.writerow([prompt, completion])

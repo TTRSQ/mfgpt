@@ -54,16 +54,7 @@ def notify_new_mails(new_mails: List[gmail.DetailItem]):
     print("notify new mails")
 
     for m in new_mails:
-        j_res = gpt.check_importance(
-            json.dumps(
-                {
-                    "title": m.subject,
-                    "from": m.sender,
-                    "snippet": m.snippet,
-                },
-                ensure_ascii=False,
-            )
-        )
+        j_res = gpt.check_importance(gmail.generate_prompt(m))
 
         # GPTが重要と判断したら通知
         if j_res.is_important:

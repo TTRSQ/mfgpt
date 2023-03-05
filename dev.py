@@ -12,17 +12,13 @@ for id in ids:
     time.sleep(1)
 
 for mail in mail_details:
-    res = gpt.check_importance(
-        json.dumps(
-            {
-                "title": mail.subject,
-                "from": mail.sender,
-                "snippet": mail.snippet,
-            },
-            ensure_ascii=False,
-        )
-    )
+    res = gpt.check_importance(gmail.generate_prompt(mail))
     print("入力:", mail.subject)
-    print("出力:", res)
+    print(
+        "出力:",
+        "必要" if res.is_important else "不要",
+    )
+    print()
+    print(res.reason)
     print()
     time.sleep(1)

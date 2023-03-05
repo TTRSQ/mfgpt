@@ -104,3 +104,11 @@ def get_message(id: str) -> DetailItem:
 
     except HttpError as error:
         raise error
+
+
+def generate_prompt(mail: DetailItem) -> str:
+    sub = mail.subject.replace('"', "").replace("'", "").replace("　", " ")
+    sender = mail.sender.replace('"', "").replace("'", "").replace("　", " ")
+    snipet = mail.snippet.replace('"', "").replace("'", "").replace("　", " ")
+    prompt = f"title: {sub}\nfrom: {sender}\nsnippet: {snipet}\n\n\n###\n\n"
+    return prompt
