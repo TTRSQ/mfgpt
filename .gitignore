@@ -2,7 +2,4 @@ keys/*
 tune/*
 .env
 .DS_Store
-data.csv
-out.csv
-out_prepared.jsonl
 requirements.txt

@@ -22,7 +22,12 @@ with open("data.csv", "r") as f:
                 "from": dic["sender"],
                 "snippet": dic["snippet"],
             }
-            prompt = json.dumps(obj, ensure_ascii=False)
-            completion = dic["ans"]
+            sub = dic["subject"].replace('"', "").replace("'", "").replace("　", " ")
+            sender = dic["sender"].replace('"', "").replace("'", "").replace("　", " ")
+            snipet = dic["snippet"].replace('"', "").replace("'", "").replace("　", " ")
+            prompt = (
+                f"title: {sub}\\nfrom: {sender}\\nsnippet: {snipet}\\n\\n\\n###\\n\\n"
+            )
+            completion = dic["ans"] + " END"
 
             writer.writerow([prompt, completion])
