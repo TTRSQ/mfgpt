@@ -1,4 +1,5 @@
 keys/*
+tune/*
 .env
 .DS_Store
 data.csv
