@@ -26,8 +26,8 @@ def check_importance(prompt: str) -> Judgement:
     if judge.find("必要") != -1 or judge.find("不要") != -1:
         # 2行目が理由
         judge_reason = (
-            response_text.split("\n")[1]
-            if response_text.split("\n")[1].find("理由") != -1
+            response_text.split("\n")[1].split("理由: ")[1]
+            if len(response_text.split("\n")[1].split("理由: ")) > 1
             else "不明"
         )
 
