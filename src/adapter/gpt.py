@@ -31,7 +31,7 @@ def generatePrompt(mailSummary: str):
 def check_importance(prompt: str) -> Judgement:
     print("prompt:", prompt)
     response = openai.Completion.create(
-        model="curie:ft-personal-2023-02-26-20-26-44",
+        model="curie:ft-personal-2023-03-05-08-17-43",
         prompt=prompt,
         temperature=0,
         max_tokens=100,
